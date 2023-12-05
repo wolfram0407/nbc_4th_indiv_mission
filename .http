@@ -1,0 +1,70 @@
+@accessToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImlhdCI6MTcwMTc2OTM1OSwiZXhwIjoxNzAxODU1NzU5fQ.T4k0BfGf1SW9qYDlhnnoDF2p7HYv9balQsXK0tnpChU
+
+@refreshToken =''
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImlhdCI6MTcwMDYzOTA1MCwiZXhwIjoxNzAwNzI1NDUwfQ.svyp_CfEi4hHZSfALWuJBJzleF-Ph4U3mmeD5PmyRKs
+
+// 쿠키
+
+### 회원 등록
+POST http://localhost:3003/api/auth/signup
+Content-Type: application/json
+
+{
+  "email" : "test@exampl.com",
+  "password" : "111111",
+  "passwordConfirm" : "111111",
+   "username" : "정근우"
+}
+###
+
+### 로그인 
+POST http://localhost:3003/api/auth/login
+Content-Type: application/json
+
+{
+  "email" : "test90@exampl.com",
+  "password" : "111111"
+}
+
+### 회원상세정보
+GET http://localhost:3003/api/userInfo
+Cookie: accessToken={{accessToken}}
+
+
+### 신규 Product 생성
+Post http://localhost:3003/api/products
+Cookie: accessToken={{accessToken}}
+Content-Type: application/json
+
+{
+  "title" : "test title4 ",
+  "contents" : "test contents4",
+  "price" : 10000
+
+}
+
+### 전체 Product 조회
+GET http://localhost:3003/api/products?sort=ASC
+Cookie: accessToken={{accessToken}}
+
+### Product 상세 조회
+GET http://localhost:3003/api/product/3
+Cookie: accessToken={{accessToken}}
+
+### Product 수정
+Put http://localhost:3003/api/product/3
+Cookie: accessToken={{accessToken}}
+Content-Type: application/json
+
+{
+  "title" : "test title421",
+  "contents" : "test contents4",
+  "price" : 10000,
+  "status" : "SOLD_OUT"
+}
+
+### Product 삭제
+DELETE http://localhost:3003/api/product/1
+Cookie: accessToken={{accessToken}}
+
+
