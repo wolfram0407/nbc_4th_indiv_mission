@@ -1,7 +1,6 @@
-@accessToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImlhdCI6MTcwMTc4NTY2OSwiZXhwIjoxNzAxODcyMDY5fQ.M4FWgWVoureLV7rmVxoHXAXV4Ic14HKiNyAyqIS0GsA
+@accessToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzAxODYwMDA3LCJleHAiOjE3MDE4NjM2MDd9.D8mYp_6cVRKFb8qfibPYfvcgcdT6qGC2H8F-levw5s4
 
-@refreshToken =''
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImlhdCI6MTcwMDYzOTA1MCwiZXhwIjoxNzAwNzI1NDUwfQ.svyp_CfEi4hHZSfALWuJBJzleF-Ph4U3mmeD5PmyRKs
+@refreshToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg2MDAwNywiZXhwIjoxNzAxOTQ2NDA3fQ.V6OD5PdL9QXlMjaPJJN4a_oLfdMBFEiSy4zfvGvQBJM
 
 // 쿠키
 
@@ -22,38 +21,41 @@ POST http://localhost:3003/api/auth/login
 Content-Type: application/json
 
 {
-  "email" : "test10@exampl.com",
+  "email" : "test21@exampl.com",
   "password" : "111111"
 }
 
 ### 회원상세정보
 GET http://localhost:3003/api/userInfo
 Cookie: accessToken={{accessToken}}
-
+Cookie: refreshToken={{refreshToken}}
 
 ### 신규 Product 생성
 Post http://localhost:3003/api/products
 Cookie: accessToken={{accessToken}}
+Cookie: refreshToken={{refreshToken}}
 Content-Type: application/json
 
 {
   "title" : "test title4",
   "contents" : "test contents4",
   "price" : 10000
-
 }
 
 ### 전체 Product 조회
 GET http://localhost:3003/api/products?sort=ASC
 Cookie: accessToken={{accessToken}}
+Cookie: refreshToken={{refreshToken}}
 
 ### Product 상세 조회
-GET http://localhost:3003/api/product/5
+GET http://localhost:3003/api/product/8
 Cookie: accessToken={{accessToken}}
+Cookie: refreshToken={{refreshToken}}
 
 ### Product 수정
-Put http://localhost:3003/api/product/5
+Put http://localhost:3003/api/product/8
 Cookie: accessToken={{accessToken}}
+Cookie: refreshToken={{refreshToken}}
 Content-Type: application/json
 
 {
@@ -64,7 +66,8 @@ Content-Type: application/json
 }
 
 ### Product 삭제
-DELETE http://localhost:3003/api/product/5
+DELETE http://localhost:3003/api/product/2
 Cookie: accessToken={{accessToken}}
+Cookie: refreshToken={{refreshToken}}
 
 

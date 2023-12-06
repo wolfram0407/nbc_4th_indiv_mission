@@ -1,7 +1,11 @@
 import express from 'express';
 import 'dotenv/config';
 import { body } from 'express-validator';
-import { isAuthenticated, checkProductOwner } from '../middlewares/auth.middleware.js';
+import {
+  checkToken,
+  isAuthenticated,
+  checkProductOwner,
+} from '../middlewares/auth.middleware.js';
 import { validate } from '../middlewares/validate.middleware.js';
 
 import db from '../../models/index.cjs';
@@ -18,12 +22,23 @@ const productController = new ProductController(productService);
 
 const router = express.Router();
 
-router.get('/products', isAuthenticated, productController.getAllProducts);
+router.get(
+  '/products',
+  checkToken,
+  isAuthenticated,
+  productController.getAllProducts
+);
 
-router.get('/product/:productId', isAuthenticated, productController.getFindProductById);
+router.get(
+  '/product/:productId',
+  checkToken,
+  isAuthenticated,
+  productController.getFindProductById
+);
 
 router.post(
   '/products',
+  checkToken,
   isAuthenticated,
   [
     body('title').trim().notEmpty().withMessage('title를 확인해주세요.'),
@@ -36,6 +51,7 @@ router.post(
 
 router.put(
   '/product/:productId',
+  checkToken,
   isAuthenticated,
   checkProductOwner,
   [
@@ -48,6 +64,12 @@ router.put(
   productController.postUpdateProduct
 );
 
-router.delete('/product/:productId', isAuthenticated, checkProductOwner, productController.postDeleteProduct);
+router.delete(
+  '/product/:productId',
+  checkToken,
+  isAuthenticated,
+  checkProductOwner,
+  productController.postDeleteProduct
+);
 
 export default router;
