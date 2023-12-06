@@ -6,14 +6,17 @@ export class ProductService {
 
   productRepository = new ProductRepository();
 
-  getAllProducts = async () => {
-    const products = await this.productRepository.getAll();
+  getAllProducts = async sort => {
+    const products = await this.productRepository.getAll(sort);
     return products;
   };
 
   getProductById = async productId => {
-    const products = await this.productRepository.getProductById(productId);
-    return products;
+    const product = await this.productRepository.getProductById(productId);
+    if (!product) {
+      throw new Error('notFoundProduct');
+    }
+    return product;
   };
 
   createProduct = async (userId, title, contents, price) => {
@@ -24,6 +27,7 @@ export class ProductService {
       contents,
     };
     const newProduct = await this.productRepository.createProduct(product);
+    if (!newProduct) throw new Error('Product Create failed');
     return newProduct;
   };
 
@@ -36,8 +40,10 @@ export class ProductService {
   };
 
   deleteProduct = async productId => {
-    console.log(productId);
     const deleteProduct = await this.productRepository.deleteProduct(productId);
+    if (!deleteProduct) {
+      return new Error('Product delete failed');
+    }
     return deleteProduct;
   };
 }

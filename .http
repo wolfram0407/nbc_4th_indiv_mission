@@ -1,4 +1,4 @@
-@accessToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImlhdCI6MTcwMTc2OTM1OSwiZXhwIjoxNzAxODU1NzU5fQ.T4k0BfGf1SW9qYDlhnnoDF2p7HYv9balQsXK0tnpChU
+@accessToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImlhdCI6MTcwMTc4NTY2OSwiZXhwIjoxNzAxODcyMDY5fQ.M4FWgWVoureLV7rmVxoHXAXV4Ic14HKiNyAyqIS0GsA
 
 @refreshToken =''
 //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImlhdCI6MTcwMDYzOTA1MCwiZXhwIjoxNzAwNzI1NDUwfQ.svyp_CfEi4hHZSfALWuJBJzleF-Ph4U3mmeD5PmyRKs
@@ -10,7 +10,7 @@ POST http://localhost:3003/api/auth/signup
 Content-Type: application/json
 
 {
-  "email" : "test@exampl.com",
+  "email" : "test21@exampl.com",
   "password" : "111111",
   "passwordConfirm" : "111111",
    "username" : "정근우"
@@ -22,7 +22,7 @@ POST http://localhost:3003/api/auth/login
 Content-Type: application/json
 
 {
-  "email" : "test90@exampl.com",
+  "email" : "test10@exampl.com",
   "password" : "111111"
 }
 
@@ -37,7 +37,7 @@ Cookie: accessToken={{accessToken}}
 Content-Type: application/json
 
 {
-  "title" : "test title4 ",
+  "title" : "test title4",
   "contents" : "test contents4",
   "price" : 10000
 
@@ -48,11 +48,11 @@ GET http://localhost:3003/api/products?sort=ASC
 Cookie: accessToken={{accessToken}}
 
 ### Product 상세 조회
-GET http://localhost:3003/api/product/3
+GET http://localhost:3003/api/product/5
 Cookie: accessToken={{accessToken}}
 
 ### Product 수정
-Put http://localhost:3003/api/product/3
+Put http://localhost:3003/api/product/5
 Cookie: accessToken={{accessToken}}
 Content-Type: application/json
 

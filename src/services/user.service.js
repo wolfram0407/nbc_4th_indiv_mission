@@ -9,6 +9,9 @@ export class UserService {
 
   userInfo = async userId => {
     const user = await this.userRepository.findUserFK(userId);
+    if (!user) {
+      throw new Error(`UserNotFound`);
+    }
     delete user.password;
     return user;
   };

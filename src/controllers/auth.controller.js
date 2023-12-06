@@ -5,10 +5,11 @@ export class AuthController {
   // 회원가입
   postSingUp = async (req, res, next) => {
     const { email, password, passwordConfirm, username } = req.body;
-    if (password !== passwordConfirm) {
-      return next(new Error('password confirm not matched'));
-    }
+
     try {
+      if (password !== passwordConfirm) {
+        throw Error('password confirm not matched');
+      }
       const user = await this.authService.registerUser(email, password, username);
       return res.status(201).json({ data: user, message: '회원가입이 되었습니다.' });
     } catch (err) {

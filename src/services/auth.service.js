@@ -12,7 +12,7 @@ export class AuthService {
   registerUser = async (email, password, username) => {
     const findUser = await this.authRepository.findAllUsers(email);
     if (!findUser) {
-      new Error('ExistEmail');
+      throw new Error('ExistEmail');
     }
     const newUser = {
       email,

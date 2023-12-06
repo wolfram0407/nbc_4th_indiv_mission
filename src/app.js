@@ -13,11 +13,11 @@ const port = 3003;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(ErrorHandlingMiddleware);
 
 // router middleware
 app.use('/api', mainRouter);
 
+app.use(ErrorHandlingMiddleware);
 app.listen(port, () => {
   console.log(port, 'listening on port ' + port);
 });

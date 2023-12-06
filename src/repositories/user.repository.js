@@ -5,7 +5,6 @@ export class UserRepository {
 
   findUserFK = async userId => {
     const user = await this.users.findByPk(userId);
-    console.log(user);
-    return user;
+    return user.dataValues;
   };
 }

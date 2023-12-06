@@ -5,12 +5,42 @@ export class ProductRepository {
     this.sequelize = sequelize;
   }
 
-  getAll = async () => {
-    const products = await this.products.findAll();
+  getAll = async sort => {
+    const products = await this.products.findAll({
+      attributes: [
+        'id',
+        'userId',
+        'title',
+        'contents',
+        'status',
+        [this.sequelize.col('username'), 'username'],
+        'createdAt',
+      ],
+      include: {
+        model: this.users,
+        attributes: [],
+      },
+      order: [['createdAt', sort]],
+    });
     return products;
   };
+
   getProductById = async productId => {
-    const products = await this.products.findByPk(productId);
+    const products = await this.products.findByPk(productId, {
+      attributes: [
+        'id',
+        'userId',
+        'title',
+        'contents',
+        'status',
+        [this.sequelize.col('username'), 'username'],
+        'createdAt',
+      ],
+      include: {
+        model: this.users,
+        attributes: [],
+      },
+    });
     return products;
   };
   createProduct = async product => {

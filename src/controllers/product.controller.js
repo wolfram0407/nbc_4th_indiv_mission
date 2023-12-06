@@ -3,15 +3,16 @@ export class ProductController {
     this.productService = productService;
   }
 
-  getProducts = async (req, res, next) => {
+  getAllProducts = async (req, res, next) => {
+    const sort = req.query.sort ? req.query.sort : 'DESC';
     try {
-      const allProducts = await this.productService.getAllProducts();
+      const allProducts = await this.productService.getAllProducts(sort);
       return res.status(200).send(allProducts);
     } catch (err) {
       next(err);
     }
   };
-  getProductById = async (req, res, next) => {
+  getFindProductById = async (req, res, next) => {
     const { productId } = req.params;
     try {
       const allProducts = await this.productService.getProductById(productId);
@@ -21,7 +22,7 @@ export class ProductController {
     }
   };
 
-  postProduct = async (req, res, next) => {
+  postCreateProduct = async (req, res, next) => {
     const userId = req.user.id;
     const { title, contents, price } = req.body;
     try {
@@ -34,7 +35,7 @@ export class ProductController {
     }
   };
 
-  updateProduct = async (req, res, next) => {
+  postUpdateProduct = async (req, res, next) => {
     const productId = req.params.productId;
     const updateDate = {
       title: req.body.title,
@@ -52,7 +53,7 @@ export class ProductController {
     }
   };
 
-  deleteProduct = async (req, res, next) => {
+  postDeleteProduct = async (req, res, next) => {
     const userId = req.user.id;
     const productId = req.params.productId;
 
