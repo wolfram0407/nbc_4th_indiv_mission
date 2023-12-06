@@ -22,7 +22,7 @@ export class AuthService {
     const createUser = await this.authRepository.createUser(newUser);
     return createUser;
   };
-
+  //로그인
   loginUser = async (email, password) => {
     const user = await this.authRepository.findOneUser(email);
     if (!user) {
@@ -32,10 +32,22 @@ export class AuthService {
     if (!comparePW) {
       throw new Error('PasswordNotCorrect');
     }
-    const accessToken = jwt.sign({ id: user.dataValues.id }, process.env.SECRETTEXT, { expiresIn: '24h' });
+    const accessToken = jwt.sign(
+      { id: user.dataValues.id },
+      process.env.SECRETTEXT,
+      { expiresIn: '1h' }
+    );
+    const refreshToken = jwt.sign(
+      { userId: user.dataValues.id },
+      process.env.REFRESHSECRETTEXT,
+      { expiresIn: '1d' }
+    );
+    await this.authRepository.saveRefresh(refreshToken, user.dataValues.id);
+
     const returnUser = {
       ...user.dataValues,
       accessToken,
+      refreshToken,
     };
     delete returnUser.password;
     return returnUser;

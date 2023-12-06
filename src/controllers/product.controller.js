@@ -23,7 +23,7 @@ export class ProductController {
   };
 
   postCreateProduct = async (req, res, next) => {
-    const userId = req.user.id;
+    const userId = res.locals.user;
     const { title, contents, price } = req.body;
     try {
       await this.productService.createProduct(userId, title, contents, price);
@@ -36,15 +36,18 @@ export class ProductController {
   };
 
   postUpdateProduct = async (req, res, next) => {
-    const productId = req.product;
-    const updateDate = {
+    const productId = res.locals.product;
+    const updateData = {
       title: req.body.title,
       contents: req.body.contents,
       price: req.body.price,
       status: req.body.status,
     };
     try {
-      const updateProduct = await this.productService.updateProduct(updateDate, productId);
+      const updateProduct = await this.productService.updateProduct(
+        updateData,
+        productId
+      );
       return res.status(201).json({
         message: '수정되었습니다.',
       });
@@ -54,7 +57,7 @@ export class ProductController {
   };
 
   postDeleteProduct = async (req, res, next) => {
-    const productId = req.product;
+    const productId = res.locals.product;
     try {
       const deleteProduct = await this.productService.deleteProduct(productId);
       return res.status(201).json({

@@ -11,6 +11,8 @@ export default function (err, req, res, next) {
         errorMessage: '패스워드가 일치하지 않습니다!',
       });
     case 'UserNotFound':
+    case 'Need login':
+    case 'accessTokenNotMatched':
       return res.status(401).send({
         errorMessage: '로그인을 해주세요!',
       });

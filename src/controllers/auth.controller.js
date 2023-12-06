@@ -10,8 +10,14 @@ export class AuthController {
       if (password !== passwordConfirm) {
         throw Error('password confirm not matched');
       }
-      const user = await this.authService.registerUser(email, password, username);
-      return res.status(201).json({ data: user, message: '회원가입이 되었습니다.' });
+      const user = await this.authService.registerUser(
+        email,
+        password,
+        username
+      );
+      return res
+        .status(201)
+        .json({ data: user, message: '회원가입이 되었습니다.' });
     } catch (err) {
       next(err);
     }
@@ -22,6 +28,9 @@ export class AuthController {
     const { email, password } = req.body;
     try {
       const user = await this.authService.loginUser(email, password);
+      req.user = user.id;
+      res.cookie('accessToken', user.accessToken);
+      res.cookie('refreshToken', user.refreshToken);
       return res.status(200).json(user);
     } catch (err) {
       next(err);

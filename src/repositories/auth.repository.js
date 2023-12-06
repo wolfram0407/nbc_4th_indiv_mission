@@ -1,6 +1,7 @@
 export class AuthRepository {
-  constructor(Users) {
+  constructor(Users, redis) {
     this.Users = Users;
+    this.redis = redis;
   }
 
   findAllUsers = async inputEmail => {
@@ -26,5 +27,22 @@ export class AuthRepository {
       },
     });
     return user;
+  };
+
+  saveRefresh = async (refreshToken, userId) => {
+    this.redis.on('connect', () => {
+      console.info('Redis connected!');
+    });
+    this.redis.on('error', err => {
+      console.error('Redis Client Error', err);
+    });
+    // 연결 종료 이벤트
+    this.redis.on('end', () => {
+      console.log('Redis Disconnected');
+    });
+    this.redis.connect();
+    await this.redis.set(refreshToken, userId);
+    await this.redis.expire(refreshToken, 60 * 24);
+    await this.redis.quit();
   };
 }

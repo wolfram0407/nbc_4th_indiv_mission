@@ -32,7 +32,10 @@ export class ProductService {
   };
 
   updateProduct = async (data, productId) => {
-    const updateProduct = await this.productRepository.updateProduct(data, productId);
+    const updateProduct = await this.productRepository.updateProduct(
+      data,
+      productId
+    );
     if (!updateProduct) {
       return new Error('Product Update failed');
     }
