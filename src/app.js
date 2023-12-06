@@ -14,6 +14,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  res.locals.accessToken = req.cookies.accessToken;
+  res.locals.refreshToken = req.cookies.refreshToken;
+  next();
+});
+
 // router middleware
 app.use('/api', mainRouter);
 

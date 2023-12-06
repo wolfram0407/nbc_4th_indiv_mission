@@ -14,6 +14,12 @@ export default function (err, req, res, next) {
       return res.status(401).send({
         errorMessage: '로그인을 해주세요!',
       });
+
+    case 'Forbidden':
+      return res.status(403).send({
+        errorMessage: '권한이 없습니다.',
+      });
+
     case 'EmailNotFound':
       return res.status(404).send({
         errorMessage: '이메일을 확인해주세요.',

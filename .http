@@ -64,7 +64,7 @@ Content-Type: application/json
 }
 
 ### Product 삭제
-DELETE http://localhost:3003/api/product/1
+DELETE http://localhost:3003/api/product/5
 Cookie: accessToken={{accessToken}}
 
 

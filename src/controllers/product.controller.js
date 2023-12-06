@@ -36,7 +36,7 @@ export class ProductController {
   };
 
   postUpdateProduct = async (req, res, next) => {
-    const productId = req.params.productId;
+    const productId = req.product;
     const updateDate = {
       title: req.body.title,
       contents: req.body.contents,
@@ -54,14 +54,14 @@ export class ProductController {
   };
 
   postDeleteProduct = async (req, res, next) => {
-    const userId = req.user.id;
-    const productId = req.params.productId;
-
-    const deleteProduct = await this.productService.deleteProduct(productId);
-    if (!deleteProduct) {
+    const productId = req.product;
+    try {
+      const deleteProduct = await this.productService.deleteProduct(productId);
+      return res.status(201).json({
+        message: '상품 삭제하였습니다.',
+      });
+    } catch (err) {
+      next(err);
     }
-    return res.status(201).json({
-      message: '상품 삭제하였습니다.',
-    });
   };
 }

@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
-
+import db from '../../models/index.cjs';
+const { Products } = db;
 export const isAuthenticated = async (req, res, next) => {
   const accessToken = req.cookies.accessToken;
   // accessToken verified
@@ -13,6 +14,19 @@ export const isAuthenticated = async (req, res, next) => {
     return next(new Error('accessTokenNotMatched'));
   }
   req.user = verifiedAccessToken;
+  next();
+};
+export const checkProductOwner = async (req, res, next) => {
+  const productId = req.params.productId;
+  const userId = req.user.id;
+  const product = await Products.findByPk(productId);
+  if (!product) {
+    return next(new Error('notFoundProduct'));
+  }
+  if (userId !== product.userId) {
+    return next(new Error('Forbidden'));
+  }
+  req.product = productId;
   next();
 };
 

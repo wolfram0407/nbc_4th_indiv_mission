@@ -1,7 +1,7 @@
 import express from 'express';
 import 'dotenv/config';
 import { body } from 'express-validator';
-import { isAuthenticated } from '../middlewares/auth.middleware.js';
+import { isAuthenticated, checkProductOwner } from '../middlewares/auth.middleware.js';
 import { validate } from '../middlewares/validate.middleware.js';
 
 import db from '../../models/index.cjs';
@@ -37,6 +37,7 @@ router.post(
 router.put(
   '/product/:productId',
   isAuthenticated,
+  checkProductOwner,
   [
     body('title').trim().notEmpty().withMessage('title를 확인해주세요.'),
     body('contents').trim().notEmpty().withMessage('contents를 확인해주세요.'),
@@ -47,6 +48,6 @@ router.put(
   productController.postUpdateProduct
 );
 
-router.delete('/product/:productId', isAuthenticated, productController.postDeleteProduct);
+router.delete('/product/:productId', isAuthenticated, checkProductOwner, productController.postDeleteProduct);
 
 export default router;
