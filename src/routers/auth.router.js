@@ -2,19 +2,20 @@ import express from 'express';
 import 'dotenv/config';
 import { body } from 'express-validator';
 import { redis } from '../config/redis.config.js';
-import db from '../../models/index.cjs';
 import { validate } from '../middlewares/validate.middleware.js';
 import { AuthController } from '../controllers/auth.controller.js';
 import { AuthService } from '../services/auth.service.js';
 import { AuthRepository } from '../repositories/auth.repository.js';
 
+import { prisma } from '../utils/prisma/index.js';
 const router = express.Router();
-const { Users } = db;
-
+const { Users } = prisma;
 const authRepository = new AuthRepository(Users, redis);
+
 const authService = new AuthService(authRepository);
 const authController = new AuthController(authService);
 
+//
 router.post(
   '/signup',
   [
@@ -56,4 +57,5 @@ router.post(
   ],
   authController.postLogin
 );
+
 export default router;

@@ -1,8 +1,10 @@
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
-import db from '../../models/index.cjs';
+
 import { redis } from '../config/redis.config.js';
-const { Products } = db;
+
+import { prisma } from '../utils/prisma/index.js';
+const { Products } = prisma;
 
 export const checkToken = (req, res, next) => {
   const accessToken = req.cookies.accessToken;
@@ -28,6 +30,7 @@ export const isAuthenticated = async (req, res, next) => {
   }
 
   const verifiedRefreshToken = verifyRefreshToken(refreshToken);
+
   if (!verifiedRefreshToken) {
     return next(new Error('Need login'));
   }
@@ -35,12 +38,15 @@ export const isAuthenticated = async (req, res, next) => {
   redis.connect();
   const getRefreshInRedis = await redis.get(refreshToken);
   redis.quit();
+
   if (!getRefreshInRedis) {
     return next(new Error('Need login'));
   }
+
   if (Number(verifiedRefreshToken.userId) !== Number(getRefreshInRedis)) {
     return next(new Error('Need login'));
   }
+
   const newAccessToken = jwt.sign(
     { id: verifiedRefreshToken.userId },
     process.env.SECRETTEXT,
@@ -50,10 +56,16 @@ export const isAuthenticated = async (req, res, next) => {
   res.locals.accessToken = newAccessToken;
   next();
 };
+
 export const checkProductOwner = async (req, res, next) => {
   const productId = req.params.productId;
   const userId = res.locals.user;
-  const product = await Products.findByPk(productId);
+  const product = await Products.findFirst({
+    where: {
+      id: Number(productId),
+    },
+  });
+
   if (!product) {
     return next(new Error('notFoundProduct'));
   }

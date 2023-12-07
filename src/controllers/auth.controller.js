@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt';
+
 export class AuthController {
   constructor(authService) {
     this.authService = authService;
@@ -5,11 +7,10 @@ export class AuthController {
   // 회원가입
   postSingUp = async (req, res, next) => {
     const { email, password, passwordConfirm, username } = req.body;
-
     try {
       if (password !== passwordConfirm) {
         throw Error('password confirm not matched');
-      }
+      } //validator 에서 하자
       const user = await this.authService.registerUser(
         email,
         password,

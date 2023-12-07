@@ -1,66 +1,88 @@
 export class ProductRepository {
-  constructor(Users, Products, sequelize) {
+  constructor(Users, Products) {
     this.users = Users;
     this.products = Products;
-    this.sequelize = sequelize;
   }
 
   getAll = async sort => {
-    const products = await this.products.findAll({
-      attributes: [
-        'id',
-        'userId',
-        'title',
-        'contents',
-        'status',
-        [this.sequelize.col('username'), 'username'],
-        'createdAt',
+    const products = await this.products.findMany({
+      orderBy: [
+        {
+          createdAt: `${sort.toLowerCase()}`,
+        },
       ],
-      include: {
-        model: this.users,
-        attributes: [],
+      select: {
+        id: true,
+        userId: true,
+        title: true,
+        contents: true,
+        price: true,
+        status: true,
+        createdAt: true,
+        Users: {
+          select: {
+            username: true,
+          },
+        },
       },
-      order: [['createdAt', sort]],
     });
     return products;
   };
 
   getProductById = async productId => {
-    const products = await this.products.findByPk(productId, {
-      attributes: [
-        'id',
-        'userId',
-        'title',
-        'contents',
-        'status',
-        [this.sequelize.col('username'), 'username'],
-        'createdAt',
-      ],
-      include: {
-        model: this.users,
-        attributes: [],
+    const products = await this.products.findFirst({
+      where: {
+        id: Number(productId),
+      },
+      select: {
+        id: true,
+        userId: true,
+        title: true,
+        contents: true,
+        price: true,
+        status: true,
+        createdAt: true,
+        Users: {
+          select: {
+            username: true,
+          },
+        },
       },
     });
     return products;
   };
+
   createProduct = async product => {
-    const createdProduct = await this.products.create(product);
-    return createdProduct.dataValues;
+    const createdProduct = await this.products.create({
+      data: {
+        userId: product.userId,
+        title: product.title,
+        price: Number(product.price),
+        contents: product.contents,
+      },
+    });
+    return createdProduct;
   };
 
   updateProduct = async (product, productId) => {
-    const createdProduct = await this.products.update(product, {
+    const createdProduct = await this.products.update({
       where: {
-        id: productId,
+        id: Number(productId),
+      },
+      data: {
+        userId: product.userId,
+        title: product.title,
+        price: Number(product.price),
+        contents: product.contents,
       },
     });
-    return createdProduct[0];
+    return createdProduct;
   };
 
   deleteProduct = async productId => {
-    const deleteProduct = await this.products.destroy({
+    const deleteProduct = await this.products.delete({
       where: {
-        id: productId,
+        id: Number(productId),
       },
     });
     return deleteProduct;

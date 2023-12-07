@@ -4,7 +4,7 @@ export class ProductController {
   }
 
   getAllProducts = async (req, res, next) => {
-    const sort = req.query.sort ? req.query.sort : 'DESC';
+    const sort = req.query.sort ? req.query.sort : 'desc';
     const newAccessToken = req.cookies.accessToken === res.locals.accessToken;
     try {
       const allProducts = await this.productService.getAllProducts(sort);

@@ -1,27 +1,30 @@
 export class AuthRepository {
   constructor(Users, redis) {
-    this.Users = Users;
+    this.users = Users;
     this.redis = redis;
   }
 
   findAllUsers = async inputEmail => {
-    const user = await this.Users.findAll({
+    const user = await this.users.findFirst({
       where: {
         email: inputEmail,
       },
     });
-    return user;
+
+    return user ? false : true;
   };
 
   createUser = async user => {
-    const newUser = await this.Users.create(user);
-    const existedUser = newUser.dataValues;
-    delete existedUser.password;
-    return existedUser;
+    const newUser = await this.users.create({
+      data: user,
+    });
+    delete newUser.password;
+    return newUser;
   };
 
   findOneUser = async email => {
-    const user = await this.Users.findOne({
+    console.log(email);
+    const user = await this.users.findFirst({
       where: {
         email,
       },

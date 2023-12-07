@@ -8,15 +8,15 @@ import {
 } from '../middlewares/auth.middleware.js';
 import { validate } from '../middlewares/validate.middleware.js';
 
-import db from '../../models/index.cjs';
-
 import { ProductRepository } from '../repositories/product.repository.js';
 import { ProductService } from '../services/product.service.js';
 import { ProductController } from '../controllers/product.controller.js';
 
-const { Products, Users, sequelize } = db;
+import { prisma } from '../utils/prisma/index.js';
 
-const productRepository = new ProductRepository(Users, Products, sequelize);
+const { Products, Users } = prisma;
+
+const productRepository = new ProductRepository(Users, Products);
 const productService = new ProductService(productRepository);
 const productController = new ProductController(productService);
 

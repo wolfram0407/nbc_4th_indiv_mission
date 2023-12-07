@@ -9,7 +9,7 @@ POST http://localhost:3003/api/auth/signup
 Content-Type: application/json
 
 {
-  "email" : "test21@exampl.com",
+  "email" : "test11@exampl.com",
   "password" : "111111",
   "passwordConfirm" : "111111",
    "username" : "정근우"
@@ -21,14 +21,14 @@ POST http://localhost:3003/api/auth/login
 Content-Type: application/json
 
 {
-  "email" : "test21@exampl.com",
+  "email" : "test11@exampl.com",
   "password" : "111111"
 }
 
 ### 회원상세정보
 GET http://localhost:3003/api/userInfo
 Cookie: accessToken={{accessToken}}
-Cookie: refreshToken={{refreshToken}}
+Cookie: refreshToken={{refreshTok en}}
 
 ### 신규 Product 생성
 Post http://localhost:3003/api/products

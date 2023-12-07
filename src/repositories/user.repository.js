@@ -4,7 +4,11 @@ export class UserRepository {
   }
 
   findUserFK = async userId => {
-    const user = await this.users.findByPk(userId);
-    return user.dataValues;
+    const user = await this.users.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+    return user;
   };
 }
