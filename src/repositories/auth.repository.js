@@ -23,7 +23,6 @@ export class AuthRepository {
   };
 
   findOneUser = async email => {
-    console.log(email);
     const user = await this.users.findFirst({
       where: {
         email,

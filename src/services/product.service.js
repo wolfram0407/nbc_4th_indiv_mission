@@ -7,7 +7,6 @@ export class ProductService {
   productRepository = new ProductRepository();
 
   getAllProducts = async sort => {
-    console.log(sort);
     const products = await this.productRepository.getAll(sort);
     return products;
   };

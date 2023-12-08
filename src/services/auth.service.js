@@ -11,7 +11,6 @@ export class AuthService {
   // 회원 가입
   registerUser = async (email, password, username) => {
     const findUser = await this.authRepository.findAllUsers(email);
-    console.log(!findUser);
     if (!findUser) {
       throw new Error('ExistEmail');
     }

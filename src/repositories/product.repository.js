@@ -8,7 +8,7 @@ export class ProductRepository {
     const products = await this.products.findMany({
       orderBy: [
         {
-          createdAt: `${sort.toLowerCase()}`,
+          createdAt: sort.toLowerCase(),
         },
       ],
       select: {
@@ -55,10 +55,8 @@ export class ProductRepository {
   createProduct = async product => {
     const createdProduct = await this.products.create({
       data: {
-        userId: product.userId,
-        title: product.title,
+        ...product,
         price: Number(product.price),
-        contents: product.contents,
       },
     });
     return createdProduct;
