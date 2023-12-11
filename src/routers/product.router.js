@@ -1,12 +1,17 @@
 import express from 'express';
 import 'dotenv/config';
-import { body } from 'express-validator';
 import {
   checkToken,
   isAuthenticated,
-  checkProductOwner,
-} from '../middlewares/auth.middleware.js';
-import { validate } from '../middlewares/validate.middleware.js';
+} from '../middlewares/Authentication.middleware.js';
+import { checkProductOwner } from '../middlewares/Authorization.middleware.js';
+import {
+  validate,
+  titleValidation,
+  contentsValidation,
+  priceValidation,
+  statusValidation,
+} from '../middlewares/validate.middleware.js';
 
 import { ProductRepository } from '../repositories/product.repository.js';
 import { ProductService } from '../services/product.service.js';
@@ -40,12 +45,7 @@ router.post(
   '/products',
   checkToken,
   isAuthenticated,
-  [
-    body('title').trim().notEmpty().withMessage('title를 확인해주세요.'),
-    body('contents').trim().notEmpty().withMessage('contents를 확인해주세요.'),
-    body('price').trim().notEmpty().withMessage('price를 확인해주세요.'),
-    validate,
-  ],
+  [titleValidation, contentsValidation, priceValidation, validate],
   productController.postCreateProduct
 );
 
@@ -55,10 +55,10 @@ router.put(
   isAuthenticated,
   checkProductOwner,
   [
-    body('title').trim().notEmpty().withMessage('title를 확인해주세요.'),
-    body('contents').trim().notEmpty().withMessage('contents를 확인해주세요.'),
-    body('price').trim().notEmpty().withMessage('price를 확인해주세요.'),
-    body('status').trim().notEmpty().withMessage('status를 확인해주세요.'),
+    titleValidation,
+    contentsValidation,
+    priceValidation,
+    statusValidation,
     validate,
   ],
   productController.postUpdateProduct

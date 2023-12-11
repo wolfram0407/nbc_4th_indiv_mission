@@ -1,7 +1,10 @@
 import express from 'express';
 import 'dotenv/config';
 
-import { isAuthenticated, checkToken } from '../middlewares/auth.middleware.js';
+import {
+  isAuthenticated,
+  checkToken,
+} from '../middlewares/Authentication.middleware.js';
 
 import { UserRepository } from '../repositories/user.repository.js';
 import { UserService } from '../services/user.service.js';

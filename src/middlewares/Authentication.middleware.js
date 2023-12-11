@@ -3,9 +3,6 @@ import 'dotenv/config';
 
 import { redis } from '../config/redis.config.js';
 
-import { prisma } from '../utils/prisma/index.js';
-const { Products } = prisma;
-
 export const checkToken = (req, res, next) => {
   const accessToken = req.cookies.accessToken;
   const refreshToken = req.cookies.refreshToken;
@@ -54,26 +51,6 @@ export const isAuthenticated = async (req, res, next) => {
   );
   res.locals.user = verifiedRefreshToken.userId;
   res.locals.accessToken = newAccessToken;
-  next();
-};
-
-export const checkProductOwner = async (req, res, next) => {
-  const productId = req.params.productId;
-  const userId = res.locals.user;
-  const product = await Products.findFirst({
-    where: {
-      id: Number(productId),
-    },
-  });
-
-  if (!product) {
-    return next(new Error('notFoundProduct'));
-  }
-  if (userId !== product.userId) {
-    return next(new Error('Forbidden'));
-  }
-
-  res.locals.product = productId;
   next();
 };
 
