@@ -51,6 +51,9 @@ export const isAuthenticated = async (req, res, next) => {
   );
   res.locals.user = verifiedRefreshToken.userId;
   res.locals.accessToken = newAccessToken;
+  res.clearCookie('accessToken');
+  res.cookie('accessToken', newAccessToken);
+
   next();
 };
 
